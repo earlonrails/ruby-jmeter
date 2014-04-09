@@ -11,7 +11,10 @@ module RubyJmeter
     include Helper
 
     def initialize(params={})
-      testname = params.kind_of?(Array) ? 'HttpRequest' : (params[:name] || 'HttpRequest')
+      testname = (params[:name] || 'HttpRequest')
+      follow_redirects = (params[:follow_redirects] || 'true')
+      auto_redirects = (params[:auto_redirects] || 'false')
+
       @doc = Nokogiri::XML(<<-EOS.strip_heredoc)
 <HTTPSamplerProxy guiclass="HttpTestSampleGui" testclass="HTTPSamplerProxy" testname="#{testname}" enabled="true">
   <elementProp name="HTTPsampler.Arguments" elementType="Arguments" guiclass="HTTPArgumentsPanel" testclass="Arguments" testname="#{testname}" enabled="true">
@@ -25,8 +28,8 @@ module RubyJmeter
   <stringProp name="HTTPSampler.contentEncoding"/>
   <stringProp name="HTTPSampler.path"/>
   <stringProp name="HTTPSampler.method">GET</stringProp>
-  <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
-  <boolProp name="HTTPSampler.auto_redirects">false</boolProp>
+  <boolProp name="HTTPSampler.follow_redirects">#{follow_redirects}</boolProp>
+  <boolProp name="HTTPSampler.auto_redirects">#{auto_redirects}</boolProp>
   <boolProp name="HTTPSampler.use_keepalive">true</boolProp>
   <boolProp name="HTTPSampler.DO_MULTIPART_POST">false</boolProp>
   <stringProp name="HTTPSampler.implementation"/>
@@ -35,7 +38,7 @@ module RubyJmeter
 </HTTPSamplerProxy>)
       EOS
       update params
-      update_at_xpath params if params.is_a?(Hash) && params[:update_at_xpath]
+      update_at_xpath params if params[:update_at_xpath]
     end
   end
 

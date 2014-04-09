@@ -89,8 +89,9 @@ module RubyJmeter
     # HTTP Samplers
 
     def get(*args, &block)
-      params = args.shift || {}
-      params = { url: params }.merge(args.shift || {}) if params.class == String
+      options = args.extract_options!
+      params = args
+      params[:url] ||= args.first
       params[:method] ||= 'GET'
       params[:name] ||= params[:url]
       parse_http_request(params)
@@ -101,8 +102,9 @@ module RubyJmeter
     alias_method :visit, :get
 
     def post(*args, &block)
-      params = args.shift || {}
-      params = { url: params }.merge(args.shift || {}) if params.class == String
+      options = args.extract_options!
+      params = args
+      params[:url] ||= args.first
       params[:method] ||= 'POST'
       params[:name] ||= params[:url]
       parse_http_request(params)
@@ -113,8 +115,9 @@ module RubyJmeter
     alias_method :submit, :post
 
     def delete(*args, &block)
-      params = args.shift || {}
-      params = { url: params }.merge(args.shift || {}) if params.class == String
+      options = args.extract_options!
+      params = args
+      params[:url] ||= args.first
       params[:method] ||= 'DELETE'
       params[:name] ||= params[:url]
       parse_http_request(params)
@@ -123,8 +126,9 @@ module RubyJmeter
     end
 
     def put(*args, &block)
-      params = args.shift || {}
-      params = { url: params }.merge(args.shift || {}) if params.class == String
+      options = args.extract_options!
+      params = args
+      params[:url] ||= args.first
       params[:method] ||= 'PUT'
       params[:name] ||= params[:url]
       parse_http_request(params)
@@ -520,6 +524,16 @@ module RubyJmeter
       @log
     end
 
+  end
+end
+
+class Array
+  def extract_options!
+    if last.is_a?(Hash) && last.instance_of?(Hash)
+      pop
+    else
+      {}
+    end
   end
 end
 
