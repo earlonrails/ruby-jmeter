@@ -89,8 +89,7 @@ module RubyJmeter
     # HTTP Samplers
 
     def get(*args, &block)
-      options = args.extract_options!
-      params = args
+      params = args.extract_options!
       params[:url] ||= args.first
       params[:method] ||= 'GET'
       params[:name] ||= params[:url]
@@ -102,8 +101,7 @@ module RubyJmeter
     alias_method :visit, :get
 
     def post(*args, &block)
-      options = args.extract_options!
-      params = args
+      params = args.extract_options!
       params[:url] ||= args.first
       params[:method] ||= 'POST'
       params[:name] ||= params[:url]
@@ -115,8 +113,7 @@ module RubyJmeter
     alias_method :submit, :post
 
     def delete(*args, &block)
-      options = args.extract_options!
-      params = args
+      params = args.extract_options!
       params[:url] ||= args.first
       params[:method] ||= 'DELETE'
       params[:name] ||= params[:url]
@@ -126,8 +123,7 @@ module RubyJmeter
     end
 
     def put(*args, &block)
-      options = args.extract_options!
-      params = args
+      params = args.extract_options!
       params[:url] ||= args.first
       params[:method] ||= 'PUT'
       params[:name] ||= params[:url]
